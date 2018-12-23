@@ -1,0 +1,17 @@
+pssearch/
+debug/
+private/
+
+.vs/
+bin/
+obj/
+packages/
+x64/
+Debug/
+Release/
+TestResults/
+*.user
+*.psess
+*.vspx
+
+*.log
