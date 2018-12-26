@@ -31,7 +31,7 @@ namespace Horker.WindowsSearch
         [Parameter(Position = 1, Mandatory = true, ParameterSetName = "sql")]
         public string SQLQuery;
 
-        [Parameter(Position = 0, Mandatory = true, ParameterSetName = "aqs")]
+        [Parameter(Position = 0, Mandatory = false, ParameterSetName = "aqs")]
         [AllowEmptyString()]
         public string Query;
 
@@ -84,6 +84,12 @@ namespace Horker.WindowsSearch
         {
             if (ParameterSetName == "aqs")
             {
+                if (string.IsNullOrEmpty(Query))
+                {
+                    // Condition that is always true
+                    Query = "System.Search.Rank:>=0";
+                }
+
                 using (var helper = new SearchQueryHelper())
                 {
                     helper.SelectColumns = ConvertToCanonicalNames(SelectColumns);
@@ -96,6 +102,7 @@ namespace Horker.WindowsSearch
 
                     if (MyInvocation.BoundParameters.ContainsKey("Where"))
                     {
+                        Where = PropertyExpander.Expand(Where);
                         var m = Regex.Match(Where, @"^\s*(and|or)\b", RegexOptions.IgnoreCase);
                         if (!m.Success)
                            Where = "AND (" + Where + ")";

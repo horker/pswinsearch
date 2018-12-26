@@ -55,6 +55,7 @@
     <Compile Include="Cmdlets\InvokeWindowsSearch.cs" />
     <Compile Include="CleanSyntax\Parser.cs" />
     <Compile Include="CleanSyntax\ParserException.cs" />
+    <Compile Include="Common\PropertyExpander.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\PropertyNameResolver.cs" />
     <Compile Include="Common\Searcher.cs" />
