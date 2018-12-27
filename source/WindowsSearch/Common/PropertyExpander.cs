@@ -57,13 +57,26 @@ namespace Horker.WindowsSearch
                 else if (code[p] == '@')
                 {
                     ++p;
-                    var m = new Regex(@"[\w\.]+").Match(code, p);
-                    if (!m.Success || m.Index != p)
+                    if (code[p] == '\'')
                     {
-                        result.Append('@');
+                        ++p;
+                        var start = p;
+                        while (p < code.Length && code[p] != '\'')
+                            ++p;
+
+                        if (p == code.Length)
+                            throw new ApplicationException("Property expansion not terminated");
+
+                        var prop = code.Substring(start, p - start);
+                        ++p;
+                        result.Append(PropertyNameResolver.Instance.GetCanonicalName(prop));
                     }
                     else
                     {
+                        var m = new Regex(@"[\w\.]+").Match(code, p);
+                        if (!m.Success || m.Index != p || m.Value.Length == 0)
+                            throw new ApplicationException("Invalid property specified after '@'");
+
                         var prop = m.Value;
                         p += prop.Length;
                         result.Append(PropertyNameResolver.Instance.GetCanonicalName(prop));
