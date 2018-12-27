@@ -48,8 +48,8 @@ namespace Horker.WindowsSearch
         public string Where;
 
         [Parameter(Position = 5, Mandatory = false, ParameterSetName = "aqs")]
-        [Alias("TotalCount")]
-        public int MaxResults;
+        [Alias("MaxResults")]
+        public int TotalCount;
 
         [Parameter(Position = 6, Mandatory = false, ParameterSetName = "aqs")]
         public SearchQueryHelper.SEARCH_QUERY_SYNTAX QuerySyntax;
@@ -111,8 +111,8 @@ namespace Horker.WindowsSearch
                     if (!string.IsNullOrEmpty(scopeClause) || !string.IsNullOrEmpty(Where))
                         helper.WhereRestrictions = scopeClause + Where;
 
-                    if (MyInvocation.BoundParameters.ContainsKey("MaxResults"))
-                        helper.MaxResults = MaxResults;
+                    if (MyInvocation.BoundParameters.ContainsKey("TotalCount"))
+                        helper.MaxResults = TotalCount;
 
                     if (MyInvocation.BoundParameters.ContainsKey("QuerySyntax"))
                         helper.QuerySyntax = QuerySyntax;
