@@ -29,7 +29,7 @@ namespace Horker.WindowsSearch
         };
 
         [Parameter(Position = 1, Mandatory = true, ParameterSetName = "sql")]
-        public string SQLQuery;
+        public string SQL;
 
         [Parameter(Position = 0, Mandatory = false, ParameterSetName = "aqs")]
         [AllowEmptyString()]
@@ -47,9 +47,10 @@ namespace Horker.WindowsSearch
         [Parameter(Position = 4, Mandatory = false, ParameterSetName = "aqs")]
         public string Where;
 
+        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "sql")]
         [Parameter(Position = 5, Mandatory = false, ParameterSetName = "aqs")]
         [Alias("MaxResults")]
-        public int TotalCount;
+        public int TotalCount = int.MaxValue;
 
         [Parameter(Position = 6, Mandatory = false, ParameterSetName = "aqs")]
         public SearchQueryHelper.SEARCH_QUERY_SYNTAX QuerySyntax;
@@ -123,16 +124,34 @@ namespace Horker.WindowsSearch
                     if (MyInvocation.BoundParameters.ContainsKey("KeywordLocale"))
                         helper.KeywordLocale = KeywordLocale;
 
-                    SQLQuery = helper.GenerateSQLFromUserQuery(Query);
-                    WriteVerbose("Generated SQL: " + SQLQuery);
+                    SQL = helper.GenerateSQLFromUserQuery(Query);
+                    WriteVerbose("Generated SQL: " + SQL);
+                }
+
+                using (var searcher = new Searcher())
+                {
+                    foreach (var result in searcher.Search(SQL))
+                        WriteObject(result);
+                }
+            }
+            else
+            {
+                SQL = PropertyExpander.Expand(SQL);
+                WriteVerbose("SQL: " + SQL);
+
+                using (var searcher = new Searcher())
+                {
+                    var count = 0;
+                    foreach (var result in searcher.Search(SQL))
+                    {
+                        if (count >= TotalCount)
+                            break;
+                        WriteObject(result);
+                        ++count;
+                    }
                 }
             }
 
-            using (var searcher = new Searcher())
-            {
-                foreach (var result in searcher.Search(SQLQuery))
-                    WriteObject(result);
-            }
         }
     }
 }
