@@ -15,8 +15,8 @@ namespace Horker.WindowsSearch
 
         private List<string> _canonicalNames;
         private List<string> _displayNames;
+        private Dictionary<string, string> _nameMap;
         private Dictionary<string, List<string>> _displayNameMap;
-        private Dictionary<string, List<string>> _baseNameMap;
 
         public List<string> CanonicalNames => _canonicalNames;
         public List<string> DisplayNames => _displayNames;
@@ -54,21 +54,14 @@ namespace Horker.WindowsSearch
             _displayNames = new List<string>();
 
             _displayNameMap = new Dictionary<string, List<string>>();
-            _baseNameMap = new Dictionary<string, List<string>>();
+            _nameMap = new Dictionary<string, string>();
 
             for (var i = 0; i < names.Length; i += 2)
             {
                 _canonicalNames.Add(names[i]);
                 _displayNames.Add(names[i + 1]);
-
+                _nameMap.Add(names[i].ToLower(), names[i]);
                 AddValue(_displayNameMap, names[i + 1].ToLower(), names[i]);
-
-                var components = names[i].Split('.');
-                for (var j = 0; j < components.Length; ++j)
-                {
-                    var key = string.Join(", ", components, j, components.Length - j);
-                    AddValue(_baseNameMap, key.ToLower(), names[i]);
-                }
             }
         }
 
@@ -91,15 +84,27 @@ namespace Horker.WindowsSearch
 
             List<string> values;
             if (_displayNameMap.TryGetValue(n, out values))
-                return GetMinimalLengthString(values);
+            {
+                if (values.Count == 1)
+                    return values[0];
 
-            var components = n.Split('.');
-            var baseName = components[components.Length - 1];
+                foreach (var v in values)
+                {
+                    if (v.ToLower().IndexOf("system.") == 0 && v.IndexOf('.', "system.".Length) == -1)
+                        return v;
+                }
 
-            if (_baseNameMap.TryGetValue(baseName, out values))
-                return GetMinimalLengthString(values);
+                throw new ApplicationException("For a display name '" + name + "', multiple properties matched: " + string.Join(" ", values));
+            }
 
-            return "";
+            string value;
+            if (_nameMap.TryGetValue(n, out value))
+                return value;
+
+            if (_nameMap.TryGetValue("system." + n, out value))
+                return value;
+
+            throw new ApplicationException("Property not found: " + name);
         }
 
         public static PropertyNameResolver Instance => new PropertyNameResolver();

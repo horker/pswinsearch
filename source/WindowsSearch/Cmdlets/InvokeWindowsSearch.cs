@@ -93,9 +93,17 @@ namespace Horker.WindowsSearch
 
                 using (var helper = new SearchQueryHelper())
                 {
-                    helper.SelectColumns = ConvertToCanonicalNames(SelectColumns);
-                    helper.ContentProperties = ConvertToCanonicalNames(ContentProperties);
-                    helper.Sorting = ConvertSortingToCanonicalNames(Sorting);
+                    var selectColumns = ConvertToCanonicalNames(SelectColumns);
+                    WriteVerbose("SelectColumns: " + string.Join(",", selectColumns));
+                    helper.SelectColumns = selectColumns;
+
+                    var contentProperties = ConvertToCanonicalNames(ContentProperties);
+                    WriteVerbose("ContentProperties: " + string.Join(",", contentProperties));
+                    helper.ContentProperties = contentProperties;
+
+                    var sorting = ConvertSortingToCanonicalNames(Sorting);
+                    WriteVerbose("Sorting: " + string.Join(",", sorting));
+                    helper.Sorting = sorting;
 
                     var scopeClause = "";
                     if (MyInvocation.BoundParameters.ContainsKey("Path"))
@@ -124,6 +132,7 @@ namespace Horker.WindowsSearch
                     if (MyInvocation.BoundParameters.ContainsKey("KeywordLocale"))
                         helper.KeywordLocale = KeywordLocale;
 
+                    WriteVerbose("Query: " + Query);
                     SQL = helper.GenerateSQLFromUserQuery(Query);
                     WriteVerbose("Generated SQL: " + SQL);
                 }
