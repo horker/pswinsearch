@@ -67,9 +67,12 @@ namespace Horker.WindowsSearch
         [Parameter(Position = 10, Mandatory = false, ParameterSetName = "aqs")]
         public string[] AdditionalColumns;
 
+        [Parameter(Position = 11, Mandatory = false, ParameterSetName = "aqs")]
+        public SwitchParameter AllowDisplayName;
+
         private string[] ConvertToCanonicalNames(string[] names)
         {
-            return names.Select(x => PropertyNameResolver.Instance.GetCanonicalName(x)).ToArray();
+            return names.Select(x => PropertyNameResolver.Instance.GetCanonicalName(x, AllowDisplayName)).ToArray();
         }
 
         private string[] ConvertSortingToCanonicalNames(string[] names)
@@ -78,7 +81,7 @@ namespace Horker.WindowsSearch
             foreach (var n in names)
             {
                 var components = n.Split(new char[] { ' ', '\t' }, 2);
-                var canonicalName = PropertyNameResolver.Instance.GetCanonicalName(components[0]);
+                var canonicalName = PropertyNameResolver.Instance.GetCanonicalName(components[0], AllowDisplayName);
                 results.Add(canonicalName + ' ' + components[1]);
             }
             return results.ToArray();
@@ -117,7 +120,7 @@ namespace Horker.WindowsSearch
 
                     if (MyInvocation.BoundParameters.ContainsKey("Where"))
                     {
-                        Where = PropertyExpander.Expand(Where);
+                        Where = PropertyExpander.Expand(Where, AllowDisplayName);
                         var m = Regex.Match(Where, @"^\s*(and|or)\b", RegexOptions.IgnoreCase);
                         if (!m.Success)
                            Where = "AND (" + Where + ")";
@@ -151,7 +154,7 @@ namespace Horker.WindowsSearch
             }
             else
             {
-                SQL = PropertyExpander.Expand(SQL);
+                SQL = PropertyExpander.Expand(SQL, AllowDisplayName);
                 WriteVerbose("SQL: " + SQL);
 
                 using (var searcher = new Searcher())

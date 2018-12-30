@@ -65,6 +65,7 @@ namespace Horker.WindowsSearch
             }
         }
 
+        // Not used
         private string GetMinimalLengthString(List<string> values)
         {
             if (values.Count == 1)
@@ -78,24 +79,21 @@ namespace Horker.WindowsSearch
             throw new ApplicationException("unreachable");
         }
 
-        public string GetCanonicalName(string name)
+        public string GetCanonicalName(string name, bool allowDisplayName = false)
         {
-            var n = name.ToLower();
-
-            List<string> values;
-            if (_displayNameMap.TryGetValue(n, out values))
+            if (allowDisplayName)
             {
-                if (values.Count == 1)
-                    return values[0];
-
-                foreach (var v in values)
+                try
                 {
-                    if (v.ToLower().IndexOf("system.") == 0 && v.IndexOf('.', "system.".Length) == -1)
-                        return v;
+                    return GetCanonicalNameByDisplayName(name);
                 }
-
-                throw new ApplicationException("For a display name '" + name + "', multiple properties matched: " + string.Join(" ", values));
+                catch (ApplicationException)
+                {
+                    // pass
+                }
             }
+
+            var n = name.ToLower();
 
             string value;
             if (_nameMap.TryGetValue(n, out value))
@@ -105,6 +103,26 @@ namespace Horker.WindowsSearch
                 return value;
 
             throw new ApplicationException("Property not found: " + name);
+        }
+
+        public string GetCanonicalNameByDisplayName(string displayName)
+        {
+            var n = displayName.ToLower();
+
+            if (!_displayNameMap.TryGetValue(n, out var values))
+                throw new ApplicationException("Property not found: " + displayName);
+
+            if (values.Count == 1)
+                return values[0];
+
+            foreach (var v in values)
+            {
+                // A name with "System.PropName" style takes precedence
+                if (v.ToLower().IndexOf("system.") == 0 && v.IndexOf('.', "system.".Length) == -1)
+                    return v;
+            }
+
+            throw new ApplicationException("Display name '" + displayName + "' ambiguous: " + string.Join(" ", values));
         }
 
         public static PropertyNameResolver Instance => new PropertyNameResolver();

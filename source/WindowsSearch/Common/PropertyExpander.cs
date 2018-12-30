@@ -9,7 +9,7 @@ namespace Horker.WindowsSearch
 {
     public class PropertyExpander
     {
-        public static string Expand(string code)
+        public static string Expand(string code, bool allowDisplayName)
         {
             var result = new StringBuilder();
 
@@ -57,6 +57,8 @@ namespace Horker.WindowsSearch
                 else if (code[p] == '@')
                 {
                     ++p;
+
+                    string prop;
                     if (code[p] == '\'')
                     {
                         ++p;
@@ -67,9 +69,8 @@ namespace Horker.WindowsSearch
                         if (p == code.Length)
                             throw new ApplicationException("Property expansion not terminated");
 
-                        var prop = code.Substring(start, p - start);
+                        prop = code.Substring(start, p - start);
                         ++p;
-                        result.Append(PropertyNameResolver.Instance.GetCanonicalName(prop));
                     }
                     else
                     {
@@ -77,10 +78,11 @@ namespace Horker.WindowsSearch
                         if (!m.Success || m.Index != p || m.Value.Length == 0)
                             throw new ApplicationException("Invalid property specified after '@'");
 
-                        var prop = m.Value;
+                        prop = m.Value;
                         p += prop.Length;
-                        result.Append(PropertyNameResolver.Instance.GetCanonicalName(prop));
                     }
+
+                    result.Append(PropertyNameResolver.Instance.GetCanonicalName(prop, allowDisplayName));
                 }
                 else
                 {
