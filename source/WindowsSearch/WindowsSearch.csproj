@@ -48,21 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CleanSyntax\AstNode.cs" />
-    <Compile Include="CleanSyntax\CodeGenerator.cs" />
-    <Compile Include="Cmdlets\FindFileInIndex.cs" />
     <Compile Include="Cmdlets\GetWindowsSearchProperty.cs" />
     <Compile Include="Cmdlets\InvokeWindowsSearch.cs" />
-    <Compile Include="CleanSyntax\Parser.cs" />
-    <Compile Include="CleanSyntax\ParserException.cs" />
     <Compile Include="Common\PropertyExpander.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\PropertyNameResolver.cs" />
     <Compile Include="Common\Searcher.cs" />
     <Compile Include="Common\SearchQueryHelper.cs" />
-    <Compile Include="CleanSyntax\Token.cs" />
-    <Compile Include="CleanSyntax\Tokenizer.cs" />
-    <Compile Include="CleanSyntax\TokenType.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Shell32">
