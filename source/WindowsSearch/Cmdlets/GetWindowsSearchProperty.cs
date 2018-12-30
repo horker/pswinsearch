@@ -12,15 +12,35 @@ namespace Horker.WindowsSearch
     [Cmdlet("Get", "WindowsSearchProperty")]
     public class GetWindowsSearchProperty : PSCmdlet
     {
+        [Parameter(Position = 0, Mandatory = false)]
+        public string[] Name = new string[0];
+
+        [Parameter(Position = 1, Mandatory = false)]
+        public string[] DisplayName = new string[0];
+
         protected override void BeginProcessing()
         {
-            var names = PropertyNameResolver.Instance.CanonicalNames;
+            var propertyNames = PropertyNameResolver.Instance.CanonicalNames;
             var displayNames = PropertyNameResolver.Instance.DisplayNames;
 
-            for (var i = 0; i < names.Count; ++i)
+            var propertyRegex = new Regex(string.Join("|", Name.Select(x => Regex.Escape(x))), RegexOptions.IgnoreCase);
+            var displayNameRegex = new Regex(string.Join("|", DisplayName.Select(x => Regex.Escape(x))), RegexOptions.IgnoreCase);
+
+            for (var i = 0; i < propertyNames.Count; ++i)
             {
+                var p = propertyNames[i];
+                var d = displayNames[i];
+
+                var show = true;
+                if (Name.Length > 0)
+                    show = propertyRegex.Match(p).Success;
+                if (DisplayName.Length > 0)
+                    show = displayNameRegex.Match(d).Success;
+                if (!show)
+                    continue;
+
                 var obj = new PSObject();
-                var prop = new PSNoteProperty("CanonicalName", names[i]);
+                var prop = new PSNoteProperty("CanonicalName", propertyNames[i]);
                 obj.Properties.Add(prop);
                 prop = new PSNoteProperty("DisplayName", displayNames[i]);
                 obj.Properties.Add(prop);
