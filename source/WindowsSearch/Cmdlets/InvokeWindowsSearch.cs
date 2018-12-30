@@ -64,6 +64,9 @@ namespace Horker.WindowsSearch
         [Parameter(Position = 9, Mandatory = false, ParameterSetName = "aqs")]
         public string[] Path;
 
+        [Parameter(Position = 10, Mandatory = false, ParameterSetName = "aqs")]
+        public string[] AdditionalColumns;
+
         private string[] ConvertToCanonicalNames(string[] names)
         {
             return names.Select(x => PropertyNameResolver.Instance.GetCanonicalName(x)).ToArray();
@@ -93,6 +96,9 @@ namespace Horker.WindowsSearch
 
                 using (var helper = new SearchQueryHelper())
                 {
+                    if (MyInvocation.BoundParameters.ContainsKey("AdditionalColumns"))
+                        SelectColumns = SelectColumns.Concat(AdditionalColumns).ToArray();
+
                     var selectColumns = ConvertToCanonicalNames(SelectColumns);
                     WriteVerbose("SelectColumns: " + string.Join(",", selectColumns));
                     helper.SelectColumns = selectColumns;
