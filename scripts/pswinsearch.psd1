@@ -12,7 +12,7 @@
 RootModule = 'pswinsearch.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.0'
+ModuleVersion = '0.2.0'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop'
@@ -31,7 +31,7 @@ Copyright = '(c) 2019 horker. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = @"
-This is a module to search the computer by Windows Search.
+This is a module to search the computer using Windows Search.
 
 The module provides the cmdlet Invoke-WindowsSearch. This cmdlet makes a query to the Windows Search subsystem and gets results as PowerShell objects.
 
@@ -121,15 +121,19 @@ PrivateData = @{
         LicenseUri = 'https://opensource.org/licenses/MIT'
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/horker/pssearch'
+        ProjectUri = 'https://github.com/horker/pswinsearch'
 
         # A URL to an icon representing this module.
         # IconUri = ''
 
         # ReleaseNotes of this module
         ReleaseNotes = @"
+v0.2.0
+- Pathname expansion in the -Path parameter of Invoke-WindowsSearch
+- Several fixes
+
 v0.1.0
-First release
+- First release
 "@
 
     } # End of PSData hashtable

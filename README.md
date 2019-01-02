@@ -22,7 +22,7 @@ The syntaxes of these query languages are documented in the following pages:
 
 [Windows Search SQL]( https://docs.microsoft.com/ja-jp/windows/desktop/search/-search-sql-windowssearch-entry)
 
-The detailed documentation for the cmdlets in the module is available in the [docs/]( https://github.com/horker/pssearch/tree/master/docs) directory.
+The detailed documentation for the cmdlets in the module is available in the [docs/]( https://github.com/horker/pswinsearch/tree/master/docs) directory.
 
 ## Installation
 
