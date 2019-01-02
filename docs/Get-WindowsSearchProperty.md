@@ -1,6 +1,6 @@
 ---
 external help file: Horker.WindowsSearch.dll-Help.xml
-Module Name: pssearch
+Module Name: pswinsearch
 online version:
 schema: 2.0.0
 ---

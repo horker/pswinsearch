@@ -1,10 +1,10 @@
-# pssearch
+# pswinsearch
 
-This is a module for PowerShell to search the computer by Windows Search.
+This is a module for PowerShell to search the computer using Windows Search.
 
 ## Overview
 
-The module provides the cmdlet `Invoke-WindowsSearch` (alias is `iws`). This cmdlet makes a query to the Windows Search Service and gets results as PowerShell objects.
+The module provides the cmdlet `Invoke-WindowsSearch` (the alias is `iws`). This cmdlet makes a query to the Windows Search subsystem and gets results as PowerShell objects.
 
 You can make a query in one of the following query languages or a combination of both.
 
@@ -14,9 +14,9 @@ The Advanced Query Syntax is the query language that is used in the search box i
 
 (2) Windows Search SQL
 
-The Windows Search Service implements the OLE DB provider as its core query engine. By accessing it directly, you can make a search query by SQL. It offers wordy but cleaner syntax than AQS and can be written in a locale-independent manner.
+The Windows Search subsystem implements the OLE DB provider as its core query engine. By accessing it directly, you can make a search query by SQL. It offers wordy but cleaner syntax than AQS and can be written in a locale-independent manner.
 
-The syntaxes of these query languages are documented in docs.microsoft.com. See the following pages for more information:
+The syntaxes of these query languages are documented in the following pages:
 
 [Advanced Query Syntax]( https://docs.microsoft.com/ja-jp/windows/desktop/search/-search-3x-advancedquerysyntax)
 
@@ -26,9 +26,8 @@ The detailed documentation for the cmdlets in the module is available in the [do
 
 ## Installation
 
-(TBD)
 ```powershell
-Install-Module pssearch
+Install-Module pswinsearch
 ```
 
 ## Examples
@@ -68,7 +67,12 @@ This command searches for files that meet the condition that the System.Music.Ar
 PS C:\> iws -SQL "SELECT System.ItemName FROM SystemIndex WHERE @Music.Artist like '%beatles%' and @DateCreated >= '2018/01/01'"
 ```
 
-An example using SQL as query language.
+This is an example using SQL as query language.
+
+## Notes
+
+This cmdlet searches only the files indexed by the Windows Search subsystem. This behavior is different from that of Windows Explorer.
+
 
 ## License
 

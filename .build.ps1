@@ -9,12 +9,12 @@ Set-StrictMode -Version 4
 $SOURCE_PATH = "$PSScriptRoot\source\x64"
 $SCRIPT_PATH = "$PSScriptRoot\scripts"
 
-$MODULE_PATH = "$PSScriptRoot\pssearch"
-$MODULE_PATH_DEBUG = "$PSScriptRoot\debug\pssearch"
+$MODULE_PATH = "$PSScriptRoot\pswinsearch"
+$MODULE_PATH_DEBUG = "$PSScriptRoot\debug\pswinsearch"
 
 $HELP_PATH = "$PSScriptRoot\docs\en-US"
 
-$SOLUTION_FILE = "$PSScriptRoot\source\pssearch.sln"
+$SOLUTION_FILE = "$PSScriptRoot\source\pswinsearch.sln"
 
 $OBJECT_FILES = @(
     "Horker.WindowsSearch.dll"
