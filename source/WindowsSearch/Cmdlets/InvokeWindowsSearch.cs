@@ -11,7 +11,7 @@ namespace Horker.WindowsSearch
 {
     [Cmdlet("Invoke", "WindowsSearch")]
     [Alias("iws")]
-    [CmdletBinding(DefaultParameterSetName = "aqs")]
+    [CmdletBinding(DefaultParameterSetName = "AdvancedQuerySyntax")]
     public class InvokeWindowsSearch : PSCmdlet
     {
         public static readonly string[] DEFAULT_COLUMNS = new string[] {
@@ -28,46 +28,46 @@ namespace Horker.WindowsSearch
             "System.Kind"
         };
 
-        [Parameter(Position = 1, Mandatory = true, ParameterSetName = "sql")]
-        public string SQL;
-
-        [Parameter(Position = 0, Mandatory = false, ParameterSetName = "aqs")]
+        [Parameter(Position = 0, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
         [AllowEmptyString()]
         public string Query;
 
-        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "aqs")]
+        [Parameter(Position = 1, Mandatory = true, ParameterSetName = "SQL")]
+        public string SQL;
+
+        [Parameter(Position = 1, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
         public string[] ContentProperties = new string[] { "System.FullText" };
 
-        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "aqs")]
+        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
         public string[] SelectColumns = DEFAULT_COLUMNS;
 
-        [Parameter(Position = 3, Mandatory = false, ParameterSetName = "aqs")]
+        [Parameter(Position = 3, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
         public string[] Sorting = new string[] { "System.Search.Rank DESC" };
 
-        [Parameter(Position = 4, Mandatory = false, ParameterSetName = "aqs")]
+        [Parameter(Position = 4, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
         public string Where;
 
-        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "sql")]
-        [Parameter(Position = 5, Mandatory = false, ParameterSetName = "aqs")]
+        [Parameter(Position = 5, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
+        [Parameter(Position = 2, Mandatory = false, ParameterSetName = "SQL")]
         [Alias("MaxResults")]
         public int TotalCount = int.MaxValue;
 
-        [Parameter(Position = 6, Mandatory = false, ParameterSetName = "aqs")]
+        [Parameter(Position = 6, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
         public SearchQueryHelper.SEARCH_QUERY_SYNTAX QuerySyntax;
 
-        [Parameter(Position = 7, Mandatory = false, ParameterSetName = "aqs")]
+        [Parameter(Position = 7, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
         public CultureInfo ContentLocale;
 
-        [Parameter(Position = 8, Mandatory = false, ParameterSetName = "aqs")]
+        [Parameter(Position = 8, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
         public CultureInfo KeywordLocale;
 
-        [Parameter(Position = 9, Mandatory = false, ParameterSetName = "aqs")]
+        [Parameter(Position = 9, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
         public string[] Path;
 
-        [Parameter(Position = 10, Mandatory = false, ParameterSetName = "aqs")]
+        [Parameter(Position = 10, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
         public string[] AdditionalColumns;
 
-        [Parameter(Position = 11, Mandatory = false, ParameterSetName = "aqs")]
+        [Parameter(Position = 11, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
         public SwitchParameter AllowDisplayName;
 
         private string[] ConvertToCanonicalNames(string[] names)
@@ -89,7 +89,7 @@ namespace Horker.WindowsSearch
 
         protected override void BeginProcessing()
         {
-            if (ParameterSetName == "aqs")
+            if (ParameterSetName == "AdvancedQuerySyntax")
             {
                 if (string.IsNullOrEmpty(Query))
                 {
