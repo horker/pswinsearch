@@ -101,11 +101,9 @@ Accept wildcard characters: False
 ```
 
 ### -DisallowDisplayName
-Disallow using display names in the following parameters: -ContentProperties, -SelectColumns, -Sorting, -Where and -SQL.
+Disallows using display names in the following parameters: -ContentProperties, -SelectColumns, -Sorting, -Where and -SQL.
 
-By default, display names in these parameters are converted into canonical names before processing.
-
-Display names are short and readable, but they are locale-specific and sometimes ambiguous. When using this cmdlet in scripts, it might be better to avoid display names.
+By default, display names in these parameters are converted into canonical names before processing. When this parameter is specified, they causes an error.
 
 In the -Query parameter, display names are always allowed.
 
@@ -229,7 +227,7 @@ Accept wildcard characters: False
 ### -SQL
 Specifies the query in Windows Search SQL.
 
-This values is directly passed to the search engine.
+This value is directly passed to the search engine.
 
 ```yaml
 Type: String

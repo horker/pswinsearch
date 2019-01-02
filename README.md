@@ -4,7 +4,7 @@ This is a module for PowerShell to search the computer by Windows Search.
 
 ## Overview
 
-The module defines the cmdlet `Invoke-WindowsSearch` (alias is `iws`). This cmdlet makes a query to the Windows Search Service and gets results as PowerShell objects.
+The module provides the cmdlet `Invoke-WindowsSearch` (alias is `iws`). This cmdlet makes a query to the Windows Search Service and gets results as PowerShell objects.
 
 You can make a query in one of the following query languages or a combination of both.
 
@@ -22,7 +22,7 @@ The syntaxes of these query languages are documented in docs.microsoft.com. See 
 
 [Windows Search SQL]( https://docs.microsoft.com/ja-jp/windows/desktop/search/-search-sql-windowssearch-entry)
 
-The detailed documentation for the cmdlets in the module is available [here]( https://github.com/horker/pssearch/tree/master/docs).
+The detailed documentation for the cmdlets in the module is available in the [docs/]( https://github.com/horker/pssearch/tree/master/docs) directory.
 
 ## Installation
 
@@ -72,4 +72,4 @@ An example using SQL as query language.
 
 ## License
 
-This module is licensed under the MIT License.
+This module is licensed under the MIT License. See LICENSE.txt for more information.
