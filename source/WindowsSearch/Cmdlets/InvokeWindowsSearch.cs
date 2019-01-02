@@ -11,6 +11,7 @@ namespace Horker.WindowsSearch
 {
     [Cmdlet("Invoke", "WindowsSearch")]
     [Alias("iws")]
+    [OutputType(typeof(PSObject))]
     [CmdletBinding(DefaultParameterSetName = "AdvancedQuerySyntax")]
     public class InvokeWindowsSearch : PSCmdlet
     {
@@ -68,11 +69,11 @@ namespace Horker.WindowsSearch
         public string[] AdditionalColumns;
 
         [Parameter(Position = 11, Mandatory = false, ParameterSetName = "AdvancedQuerySyntax")]
-        public SwitchParameter AllowDisplayName;
+        public SwitchParameter DisallowDisplayName;
 
         private string[] ConvertToCanonicalNames(string[] names)
         {
-            return names.Select(x => PropertyNameResolver.Instance.GetCanonicalName(x, AllowDisplayName)).ToArray();
+            return names.Select(x => PropertyNameResolver.Instance.GetCanonicalName(x, !DisallowDisplayName)).ToArray();
         }
 
         private string[] ConvertSortingToCanonicalNames(string[] names)
@@ -81,7 +82,7 @@ namespace Horker.WindowsSearch
             foreach (var n in names)
             {
                 var components = n.Split(new char[] { ' ', '\t' }, 2);
-                var canonicalName = PropertyNameResolver.Instance.GetCanonicalName(components[0], AllowDisplayName);
+                var canonicalName = PropertyNameResolver.Instance.GetCanonicalName(components[0], !DisallowDisplayName);
                 results.Add(canonicalName + ' ' + components[1]);
             }
             return results.ToArray();
@@ -120,7 +121,7 @@ namespace Horker.WindowsSearch
 
                     if (MyInvocation.BoundParameters.ContainsKey("Where"))
                     {
-                        Where = PropertyExpander.Expand(Where, AllowDisplayName);
+                        Where = PropertyExpander.Expand(Where, !DisallowDisplayName);
                         var m = Regex.Match(Where, @"^\s*(and|or)\b", RegexOptions.IgnoreCase);
                         if (!m.Success)
                            Where = "AND (" + Where + ")";
@@ -154,7 +155,7 @@ namespace Horker.WindowsSearch
             }
             else
             {
-                SQL = PropertyExpander.Expand(SQL, AllowDisplayName);
+                SQL = PropertyExpander.Expand(SQL, !DisallowDisplayName);
                 WriteVerbose("SQL: " + SQL);
 
                 using (var searcher = new Searcher())

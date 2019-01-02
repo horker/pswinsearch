@@ -1,6 +1,8 @@
 pssearch/
 debug/
 private/
+temp/
+docs/en-US/
 
 .vs/
 bin/

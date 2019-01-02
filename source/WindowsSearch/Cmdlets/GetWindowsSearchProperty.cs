@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace Horker.WindowsSearch
 {
     [Cmdlet("Get", "WindowsSearchProperty")]
+    [OutputType(typeof(PSObject))]
     public class GetWindowsSearchProperty : PSCmdlet
     {
         [Parameter(Position = 0, Mandatory = false)]
