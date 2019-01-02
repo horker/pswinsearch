@@ -23,12 +23,12 @@ namespace Horker.WindowsSearch
                     {
                         while (true)
                         {
-                            for (; p < code.Length && code[p] != '\''; ++p)
+                            for (; code[p] != '\''; ++p)
                                 result.Append(code[p]);
+                            result.Append('\'');
+                            ++p;
                             if (p == code.Length || code[p] != '\'')
                                 break;
-                            result.Append(code[p]);
-                            ++p;
                         }
                     }
                     catch (IndexOutOfRangeException)
