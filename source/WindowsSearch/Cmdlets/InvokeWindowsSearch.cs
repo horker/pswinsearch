@@ -117,7 +117,12 @@ namespace Horker.WindowsSearch
 
                     var scopeClause = "";
                     if (MyInvocation.BoundParameters.ContainsKey("Path"))
-                        scopeClause = "AND (" + String.Join(" OR ", Path.Select(s => "SCOPE='" + s + "'")) + ") ";
+                    {
+                        var paths = Path.SelectMany(p => {
+                            return SessionState.Path.GetResolvedProviderPathFromPSPath(p, out var provider);
+                        });
+                        scopeClause = "AND (SCOPE='" + String.Join("' OR SCOPE='", paths) + "') ";
+                    }
 
                     if (MyInvocation.BoundParameters.ContainsKey("Where"))
                     {
