@@ -83,7 +83,10 @@ namespace Horker.WindowsSearch
             {
                 var components = n.Split(new char[] { ' ', '\t' }, 2);
                 var canonicalName = PropertyNameResolver.Instance.GetCanonicalName(components[0], !DisallowDisplayName);
-                results.Add(canonicalName + ' ' + components[1]);
+                if (components.Length >= 2)
+                    results.Add(canonicalName + ' ' + components[1]);
+                else
+                    results.Add(canonicalName);
             }
             return results.ToArray();
         }
