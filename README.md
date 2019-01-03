@@ -26,6 +26,8 @@ The detailed documentation for the cmdlets in the module is available in the [do
 
 ## Installation
 
+This module is published in [PowerShell Gallery](https://www.powershellgallery.com/packages/pswinsearch)
+
 ```powershell
 Install-Module pswinsearch
 ```
@@ -51,9 +53,9 @@ This command searches for "the beatles" in the Music folder. The outputs include
 PS C:\> iws "the beatles" -Where "@DateModified >= '2018/01/01'"
 ```
 
-This command searches for "the beatles" with the condition that the last modified date is newer than or equal to January 1, 2018.
+This is an example of a combination of AQS and SQL queries. This command searches for "the beatles" with the condition that the last modified date is newer than or equal to January 1, 2018.
 
-This is an example of a combination of AQS and SQL queries.
+The word `@DateModified` is an abbreviation of `System.DateModified`. You can place a canonical name without the leading `System.` (e.g., `ItemFolderPathDisplayNarrow`) or a display name (`Folder`) of the property after the `@` prefix. This representation is supported in the -Where and -SQL parameters.
 
 ### Example 4
 ```powershell
